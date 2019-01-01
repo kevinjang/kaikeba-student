@@ -1,4 +1,6 @@
 import {Component} from '@angular/core';
+// 具名导入
+import Student, {HOST, add, Foo, Bar, ooxx} from './my-module';
 
 // 变量、常量
 let name: string;
