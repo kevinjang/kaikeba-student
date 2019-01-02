@@ -95,6 +95,26 @@ class Dog extends Animal {
     super.move(distance);
   }
 
+  eat(food: string): boolean;
+  eat(food: {name: string, amount: number}): {canEat: boolean, msg: string};
+  eat(food: string | {name: string, amount: number}): any {
+    if (typeof food === 'string') {
+      return food === 'bone';
+    } else {
+      const canEat = food.name === 'bone' && food.amount < 3;
+      let msg = '';
+      if ( food.name !== 'bone') {
+        msg += 'i only eat bones';
+      }
+
+      if ( food.amount >= 3) {
+        msg += 'i can only have 2 bones';
+      }
+
+      return { canEat, msg };
+    }
+  }
+
   // move(a: number, b: number) {
   //   return a + b;
   // }
@@ -115,12 +135,14 @@ class Grid {
     const xDist = point.x - Grid.origin.x;
     const yDist = point.y - Grid.origin.y;
 
-    return Math.sqrt(xDist * xDist + yDist * yDist);
+    const l = xDist * xDist + yDist * yDist;
+
+    return Math.sqrt(l);
   }
 }
 
 const grid = new Grid();
-console.log(grid.distance({x: 11, y: 11}));
+console.log(grid.distance({x: 3, y: 4}));
 
 // 存取器
 class Employee {
@@ -135,6 +157,39 @@ class Employee {
 
 }
 
+// 泛型
+function useGenric<T>(arg: T): T {
+  return arg;
+}
+
+// 完整语法
+console.log(useGenric<string>('MJ'));
+// 利用了类型推论，省略了T的值
+console.log(useGenric(1));
+
+interface Result<T> {
+  success: boolean;
+  data: T;
+}
+
+interface  User {
+  id: number;
+  name: string;
+}
+
+const r: CResult<User> = {
+  success: true,
+  data: {id: 1, name: 'tom'}
+};
+
+// 泛型类
+class CResult<T> {
+  // success: boolean;
+  // data: T;
+  constructor(public success: boolean, public data: T) {
+
+  }
+}
 
 @Component({
   selector: 'app-root',
